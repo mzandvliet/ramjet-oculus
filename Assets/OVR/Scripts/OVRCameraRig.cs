@@ -54,7 +54,9 @@ public class OVRCameraRig : MonoBehaviour
 	/// </summary>
 	public Transform rightEyeAnchor { get; private set; }
 
-	private bool needsCameraConfigure;
+    public event System.Action<OVRCameraRig> OnLateUpdate;
+    
+    private bool needsCameraConfigure;
 
 #region Unity Messages
 	private void Awake()
@@ -84,6 +86,10 @@ public class OVRCameraRig : MonoBehaviour
 		
 		if (!Application.isPlaying)
 			return;
+
+	    if (OnLateUpdate != null) {
+	        OnLateUpdate(this);
+	    }
 
 		UpdateCameras();
 		UpdateAnchors();
